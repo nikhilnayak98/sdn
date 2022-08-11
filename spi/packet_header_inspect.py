@@ -25,9 +25,9 @@ def PHI(event):
         tcpbytes = tcp_packet.pack()
 
         # check for suspicious strings
-        if tcpbytes.find("NT LM 0.12") != -1:
+        if tcpbytes.find(sus_str0) != -1 or tcpbytes.find(sus_str1) != -1 or tcpbytes.find(sus_str2) != -1 or tcpbytes.find(sus_str3) != -1 or tcpbytes.find(sus_str4) != -1:
            detection_time = str(datetime.now())
-           print("NT LM 0.12 has been found ! <-> SMB version 1 attempt. At time: ", detection_time)
+           print("suspicious string found has been found ! <-> SMB version 1 attempt. At time: ", detection_time)
            
            # search for the IP version 4 fields in the packer
            ip_packet = event.parsed.find('ipv4')
