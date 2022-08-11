@@ -1,3 +1,5 @@
+# ./pox.py misc.full_payload forwarding.l2_learning packet_header_inspect samples.pretty_log log.level --DEBUG info.packet_dump
+
 from pox.core import core
 import pox.lib.packet as pkt
 from pox.lib.addresses import IPAddr
