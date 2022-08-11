@@ -5,9 +5,9 @@ import pox.openflow.libopenflow_01 as of
 from datetime import datetime
 
 def DPI(event):
-    suspicious_strings = ["h6agLCqPqVyXi2VSQ8O6Yb9ijBX54j", 
-                        "h54WfF9cGigWFEx92bzmOd0UOaZlM", 
-                        "tpGFEoLOU6+5I78Toh/nHs/RAP"]
+    sus_str0 = "h6agLCqPqVyXi2VSQ8O6Yb9ijBX54j"
+    sus_str1 = "h54WfF9cGigWFEx92bzmOd0UOaZlM"
+    sus_str2 = "tpGFEoLOU6+5I78Toh/nHs/RAP"
 
     # search for TCP.
     tcp_packet = event.parsed.find('tcp') 
@@ -22,9 +22,9 @@ def DPI(event):
         tcpbytes = tcp_packet.pack()
 
         # check for suspicious strings
-        if tcpbytes.find("infpub") != -1:
+        if tcpbytes.find(sus_str0) != -1 or tcpbytes.find(sus_str1) != -1 or tcpbytes.find(sus_str2) != -1:
            detection_time = str(datetime.now())
-           print("infpub has been found ! <-> BadRabbit Self-propagation attempt. At the time: ", detection_time)
+           print("suspicious string has been found ! <-> wannaCry self-propagation attempt. At time: ", detection_time)
            IP = event.parsed.find('ipv4')
            ipaddr = IP.srcip
 
@@ -40,7 +40,7 @@ def DPI(event):
            for connection in core.openflow.connections:
                connection.send(msg)
                core.getLogger("blocker").debug("flow has been installed for %s with destination port %i", IP.srcip, tcp_packet.dstport)
-               core.getLogger("blocker").debug("Blocked suspicious packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport)
+               core.getLogger("blocker").debug("blocked suspicious packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport)
         else:
            msg = of.ofp_packet_out()
            msg.actions.append(of.ofp_action_output(port = of.OFPP_FLOOD))

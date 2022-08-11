@@ -17,7 +17,7 @@ def PHI(event):
         if tcpbytes.find("NT LM 0.12") != -1:
     # search for the string ( NT LM 0.12) in the traffic
            detection_time = str(datetime.now())
-           print("NT LM 0.12 has been found ! <-> attmept to use SMB version 1 !!!. At the time: ", detection_time)
+           print("NT LM 0.12 has been found ! <-> attmept to use SMB version 1 !!!. At time: ", detection_time)
            ip_packet = event.parsed.find('ipv4')
            # search for the IP version 4 fields in the packer
            ipaddr = ip_packet.srcip
@@ -32,7 +32,7 @@ def PHI(event):
            for connection in core.openflow.connections:
                connection.send(msg)
                core.getLogger("blocker").debug("flow has been installed for %s with destination port %i", ip_packet.srcip, tcp_packet.dstport)
-               core.getLogger("blocker").debug("Blocked SMBv1 packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport)
+               core.getLogger("blocker").debug("blocked SMBv1 packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport)
            event.halt = True
         else:
         # if the packet does not contain the string NT LM 0.12, forward it to the forwarding.l2_learning component in POX.
