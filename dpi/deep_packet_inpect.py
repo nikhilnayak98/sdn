@@ -9,7 +9,7 @@ def DPI(event):
     sus_str1 = "h54WfF9cGigWFEx92bzmOd0UOaZlM"
     sus_str2 = "tpGFEoLOU6+5I78Toh/nHs/RAP"
 
-    # search for TCP.
+    # search for TCP
     tcp_packet = event.parsed.find('tcp') 
 
     # if the packet is not TCP, then do not handle it and return it to the forwarding.l2_learning component
