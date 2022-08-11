@@ -24,7 +24,8 @@ def DPI(event):
         # check for suspicious strings
         if tcpbytes.find(sus_str0) != -1 or tcpbytes.find(sus_str1) != -1 or tcpbytes.find(sus_str2) != -1:
            detection_time = str(datetime.now())
-           print("suspicious string has been found ! <-> wannaCry self-propagation attempt. At time: ", detection_time)
+           print("suspicious string has been found ! <-> wannacry self-propagation attempt. At time: ", detection_time)
+
            IP = event.parsed.find('ipv4')
            ipaddr = IP.srcip
 
