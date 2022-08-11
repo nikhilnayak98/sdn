@@ -5,6 +5,12 @@ import pox.openflow.libopenflow_01 as of
 from datetime import datetime
 
 def PHI(event):
+    sus_str0 = "PC NETWORK PROGRAM 1.0"
+    sus_str1 = "LANMAN1.0"
+    sus_str2 = "Windows for Workgroups 3.1a"
+    sus_str3 = "LM1.2X002"
+    sus_str4 = "NT LM 0.12"
+
     # search for TCP packets
     tcp_packet = event.parsed.find('tcp')
     
@@ -14,22 +20,22 @@ def PHI(event):
     # else, inspect the destination port for the ports 139 and 445
     elif (tcp_packet.dstport == 139 or tcp_packet.dstport == 445):
         # parse the packet
-        # convert the in-wire data to strings using pack function.
         tcpbytes = tcp_packet.pack()
 
-        # search for the string ( NT LM 0.12) in the traffic
+        # check for suspicious strings
         if tcpbytes.find("NT LM 0.12") != -1:
            detection_time = str(datetime.now())
            print("NT LM 0.12 has been found ! <-> SMB version 1 attempt. At time: ", detection_time)
+           
            # search for the IP version 4 fields in the packer
            ip_packet = event.parsed.find('ipv4')
            ipaddr = ip_packet.srcip
            msg = of.ofp_flow_mod()
-           msg.match.dl_type = 0x800 
+           msg.match.dl_type = 0x800                    # match only with IPv4 packets as 0x800 is IPv4
            msg.match_nw_src = ipaddr
-           msg.match.nw_proto = 6
-           msg.match.tp_dst = tcp_packet.dstport
-           msg.idle_timeout = 1200
+           msg.match.nw_proto = 6                       # match with the TCP packets as 6 is TCP
+           msg.match.tp_dst = tcp_packet.dstport        # match with the destination port of the detected packet
+           msg.idle_timeout = 1200                      # apply this rule for 20 minutes
            msg.hard_timeout = 1800
 
            # install a rule to block the IP address of the sender
@@ -39,7 +45,6 @@ def PHI(event):
                core.getLogger("blocker").debug("blocked SMBv1 packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport)
            event.halt = True
         else:
-        # if the packet does not contain the string NT LM 0.12, forward it to the forwarding.l2_learning component in POX
            msg = of.ofp_packet_out()
            msg.actions.append(of.ofp_action_output(port = of.OFPP_FLOOD))
            msg.data = event.ofp

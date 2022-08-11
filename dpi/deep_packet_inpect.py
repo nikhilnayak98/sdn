@@ -9,7 +9,7 @@ def DPI(event):
     sus_str1 = "h54WfF9cGigWFEx92bzmOd0UOaZlM"
     sus_str2 = "tpGFEoLOU6+5I78Toh/nHs/RAP"
 
-    # search for TCP
+    # search for TCP packets
     tcp_packet = event.parsed.find('tcp') 
 
     # if the packet is not TCP, then do not handle it and return it to the forwarding.l2_learning component
@@ -38,6 +38,7 @@ def DPI(event):
            msg.match.tp_dst = tcp_packet.dstport    # match with the destination port of the detected packet
            msg.idle_timeout = 1200                  # apply this rule for 20 minutes
 
+           # install a rule to block the IP address of the sender
            for connection in core.openflow.connections:
                connection.send(msg)
                core.getLogger("blocker").debug("flow has been installed for %s with destination port %i", IP.srcip, tcp_packet.dstport)
