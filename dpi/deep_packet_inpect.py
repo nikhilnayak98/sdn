@@ -7,6 +7,7 @@ from pox.lib.addresses import IPAddr
 from datetime import datetime
 
 def DPI(event):
+    # suspicious strings
     sus_str0 = "h6agLCqPqVyXi2VSQ8O6Yb9ijBX54j"
     sus_str1 = "h54WfF9cGigWFEx92bzmOd0UOaZlM"
     sus_str2 = "tpGFEoLOU6+5I78Toh/nHs/RAP"

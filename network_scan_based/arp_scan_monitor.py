@@ -11,6 +11,9 @@ from datetime import datetime
 mydict = dict()
 
 def ASM(event):
+    # define threshold
+    threshold_value = 5
+
     # parse the packet
     packet = event.parsed
 
@@ -25,8 +28,8 @@ def ASM(event):
             mydict[packet.src] = mydict.get(packet.src, 0) + 1
             print(packet.payload.protosrc, "has performed", mydict[packet.src], "unanswered ARP reuqests.")
             
-            # if threshold is more than 5, install a rule to block the packet source MAC address from communicating within the network
-            if mydict[packet.src] > 5:
+            # if threshold is more than provided, install a rule to block the packet source MAC address from communicating within the network
+            if mydict[packet.src] > threshold_value:
                 detection_time = str(datetime.now())
                 print("suspicious arp packets found ! <-> sending three or more suspicious arp packets. At time:", detection_time)
 
@@ -38,7 +41,7 @@ def ASM(event):
                 
                 for connection in core.openflow.connections:
                     connection.send(msg)
-                    core.getLogger("ARP Requests Monitor").debug("Blocked host with IP %s on port %i for 30 minutes", packet.payload.protosrc ,event.port)
+                    core.getLogger("ARP Requests Monitor").debug("Blocked host with IP %s on port %i for 30 minutes", packet.payload.protosrc, event.port)
                     event.halt = True
             else:
                 pass
@@ -47,7 +50,6 @@ def ASM(event):
             # decrease one to MAC source address in the dictionary
             mydict[packet.dst] = mydict.get(packet.dst, 0) - 1
             print(packet.payload.protodst, "has performed", mydict[packet.dst], "unanswered ARP requests.")
-            
         else:
             return
     else:

@@ -7,6 +7,7 @@ from pox.lib.addresses import IPAddr
 from datetime import datetime
 
 def PHI(event):
+    # suspicious headers
     sus_str0 = "PC NETWORK PROGRAM 1.0"
     sus_str1 = "LANMAN1.0"
     sus_str2 = "Windows for Workgroups 3.1a"

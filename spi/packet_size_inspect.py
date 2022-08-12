@@ -11,7 +11,11 @@ from datetime import datetime
 packets = dict()
 
 def PSI(event):
+    # suspicious packet sizes
     sus_packet_sizes = [145, 250, 238]
+
+    # define threshold
+    threshold_value = 5
 
     # search for TCP packets
     SMB_packet = event.parsed.find('tcp')
@@ -42,8 +46,8 @@ def PSI(event):
                 connection.send(msg)
             event.halt = True
 
-            # if threshold is more than 5, install a rule to block the packet source MAC address from communicating within the network
-            if packets[packet.src] > 5:
+            # if threshold is more than provided, install a rule to block the packet source MAC address from communicating within the network
+            if packets[packet.src] > threshold_value:
                 detection_time = str(datetime.now())
                 print("suspicious smb packets found ! <-> sending three or more suspicious SMB packets. At time:", detection_time)
 
