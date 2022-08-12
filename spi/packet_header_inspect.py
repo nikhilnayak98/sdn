@@ -29,7 +29,7 @@ def PHI(event):
            detection_time = str(datetime.now())
            print("suspicious string found has been found ! <-> SMB version 1 attempt. At time: ", detection_time)
            
-           # search for the IP version 4 fields in the packer
+           # IPv4 fields in the packer
            ip_packet = event.parsed.find('ipv4')
            ipaddr = ip_packet.srcip
            msg = of.ofp_flow_mod()
