@@ -1,10 +1,10 @@
 # ./pox.py misc.full_payload forwarding.l2_learning packet_size_inspect samples.pretty_log log.level --DEBUG info.packet_dump
 
 from pox.core import core
-import pox.lib.packet as pkt
 import pox.openflow.libopenflow_01 as of
-from pox.lib.packet import tcp
+import pox.lib.packet as pkt
 from pox.lib.addresses import IPAddr, EthAddr
+from pox.lib.packet import tcp
 from datetime import datetime
 
 # create a dictionary to put suspicious MAC addresses and threshold

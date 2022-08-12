@@ -3,8 +3,8 @@
 from pox.core import core
 import pox.openflow.libopenflow_01 as of
 import pox.lib.packet as pkt
-from pox.lib.packet.arp import arp
 from pox.lib.addresses import IPAddr
+from pox.lib.packet.arp import arp
 from datetime import datetime
 
 # create a dictionary to put suspicious MAC addresses and threshold

@@ -1,9 +1,9 @@
 # ./pox.py misc.full_payload forwarding.l2_learning packet_header_inspect samples.pretty_log log.level --DEBUG info.packet_dump
 
 from pox.core import core
+import pox.openflow.libopenflow_01 as of
 import pox.lib.packet as pkt
 from pox.lib.addresses import IPAddr
-import pox.openflow.libopenflow_01 as of
 from datetime import datetime
 
 def PHI(event):
