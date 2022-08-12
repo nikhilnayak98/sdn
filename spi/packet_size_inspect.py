@@ -27,7 +27,7 @@ def PSI(event):
         # get the size of the packet
         packet_size = len(SMB_packet)
         
-        # if the packet size is suspicious, add MAC address to dictionary and increament threshold
+        # if the packet size is suspicious, add MAC address to dictionary and increment threshold
         # then forward the packet to the forwarding.l2_learning component
         if packet_size in sus_packet_sizes:
             packets[packet.src] = packets.get(packet.src, 0) + 1
@@ -44,6 +44,9 @@ def PSI(event):
 
             # if threshold is more than 5, install a rule to block the packet source MAC address from communicating within the network
             if packets[packet.src] > 5:
+                detection_time = str(datetime.now())
+                print("suspicious smb packets found ! <-> sending three or more suspicious SMB packets. At time:", detection_time)
+
                 msg = of.ofp_flow_mod()
                 msg.match.dl_src = packet.src
                 msg.idle_timeout = 1800
@@ -51,9 +54,7 @@ def PSI(event):
                 
                 for connection in core.openflow.connections:
                     connection.send(msg)
-                    core.getLogger("SMB Monitor").debug("Blocked host with MAC address %s on port %i: Sending three or more suspicious SMB packets", packet.src ,event.port)
-                    detect_time = str(datetime.now())
-                    print("Detection time is : ", detect_time)
+                    core.getLogger("SMB Monitor").debug("blocked suspicious host with MAC address %s on port %i: sending three or more suspicious SMB packets", packet.src, event.port)
                 event.halt = True
             else:
                 return
@@ -69,4 +70,4 @@ def PSI(event):
         return
     
 def launch():
-    core.openflow.addListenerByName("PacketIn", PSI, priority=10000)
+    core.openflow.addListenerByName("PacketIn", PSI, priority = 10000)
