@@ -11,8 +11,11 @@ from datetime import datetime
 packets = dict()
 
 def PSI(event):
-    # suspicious packet sizes
-    sus_packet_sizes = [145, 250, 238]
+
+    # actual suspicious sizes on WireShark 93, 114, 136, 146, 150, 187, 193, 194, 1287
+    # suspicious packet sizes 78, 84, 1532, 1305, 112, 1224
+    # pattern 80, 78, 204
+    sus_packet_sizes = [78, 84, 80, 204]
 
     # define threshold
     threshold_value = 5
@@ -30,7 +33,7 @@ def PSI(event):
         
         # get the size of the packet
         packet_size = len(SMB_packet)
-        
+    
         # if the packet size is suspicious, add MAC address to dictionary and increment threshold
         # then forward the packet to the forwarding.l2_learning component
         if packet_size in sus_packet_sizes:
@@ -47,7 +50,7 @@ def PSI(event):
             event.halt = True
 
             # if threshold is more than provided, install a rule to block the packet source MAC address from communicating within the network
-            if packets[packet.src] > threshold_value:
+            if packets[packet.src] >= threshold_value:
                 detection_time = str(datetime.now())
                 print("suspicious smb packets found ! <-> sending three or more suspicious SMB packets. At time:", detection_time)
 
