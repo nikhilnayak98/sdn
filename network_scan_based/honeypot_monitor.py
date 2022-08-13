@@ -39,7 +39,7 @@ def HPM(event):
             msg.idle_timeout = 1200
             msg.hard_timeout = 1800
             
-            # If the packet destinated to the honeypot, block the sender from sending any TCP traffic
+            # block the sender from sending any TCP traffic
             for connection in core.openflow.connections:
                 connection.send(msg)
                 core.getLogger("blocker").debug("installing flow for %s with destination port %i", ip_packet.srcip, Received_packet.dstport)
