@@ -13,6 +13,7 @@ def HPM(event):
     # define honeypot address in the network
     honeypot_address = "192.168.1.7"
 
+    # TODO: some of the ports communicate over UDP so write some code for UDP
     # search for TCP packets
     Received_packet = event.parsed.find('tcp')
     if Received_packet is None:
