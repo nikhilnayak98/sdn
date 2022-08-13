@@ -12,3 +12,12 @@ Detects malicious tcp packets based on their size to block the host.
 
 ## 2. Deep Packet Inspection (DPI)
 Analyses tcp packet for unique malicious strings to block the host.
+
+## 3. Network Scan Based
+Analyses network traffic scans to block the host.
+
+### 3.1. arp_scan_monitor.py
+Detects arp scan with a threshold by keeping a log of number of arp request packets and reply packets and blocks the host.
+
+### 3.2. honeypot_monitor.py
+Detects connections over specific ports to a honeypot in the network and blocks the host.
