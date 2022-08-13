@@ -22,8 +22,8 @@ def PSI(event):
     
     if SMB_packet is None:
         return
-    # check if its destination port is SMB port
-    elif SMB_packet.dstport == 445:
+    # check if its destination port is 139 or 445
+    elif SMB_packet.dstport == 139 or SMB_packet.dstport == 445:
         # parse the packet
         SMB_packet = event.ofp
         packet = event.parsed

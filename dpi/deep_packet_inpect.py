@@ -15,11 +15,11 @@ def DPI(event):
     # search for TCP packets
     tcp_packet = event.parsed.find('tcp') 
 
-    # if the packet is not TCP, then do not handle it and return it to the forwarding.l2_learning component
+    # if packet is not TCP return it to forwarding.l2_learning component
     if tcp_packet is None:
         return
-    # else, inspect the destination port for the ports 80, 445 or 139
-    elif (tcp_packet.dstport == 80 or tcp_packet.dstport == 445 or tcp_packet.dstport == 139):
+    # inspect destination port for ports 80, 445 or 139
+    elif tcp_packet.dstport == 80 or tcp_packet.dstport == 445 or tcp_packet.dstport == 139:
         # parse the packet
         packet = event.parsed
         tcpbytes = tcp_packet.pack()
@@ -32,7 +32,7 @@ def DPI(event):
            IP = event.parsed.find('ipv4')
            ipaddr = IP.srcip
 
-           # modify the flow table entries to add the following matching entries
+           # modify flow table entries to add the following matching entries
            msg = of.ofp_flow_mod()
            
            msg.match.dl_type = 0x800                # match only with IPv4 packets as 0x800 is IPv4
@@ -41,7 +41,7 @@ def DPI(event):
            msg.match.tp_dst = tcp_packet.dstport    # match with the destination port of the detected packet
            msg.idle_timeout = 1200                  # apply this rule for 20 minutes
 
-           # install a rule to block the IP address of the sender
+           # install a rule to block IP address of the sender
            for connection in core.openflow.connections:
                connection.send(msg)
                core.getLogger("blocker").debug("flow has been installed for %s with destination port %i", IP.srcip, tcp_packet.dstport)

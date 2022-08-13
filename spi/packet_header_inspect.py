@@ -16,12 +16,12 @@ def PHI(event):
 
     # search for TCP packets
     tcp_packet = event.parsed.find('tcp')
-    
-   # if the packet is not TCP, then do not handle it and return it to the forwarding.l2_learning component
+
+    # if packet is not TCP return it to forwarding.l2_learning component    
     if tcp_packet is None:
         return
-    # else, inspect the destination port for the ports 139 and 445
-    elif (tcp_packet.dstport == 139 or tcp_packet.dstport == 445):
+    # inspect destination port for ports 139 or 445
+    elif tcp_packet.dstport == 139 or tcp_packet.dstport == 445:
         # parse the packet
         tcpbytes = tcp_packet.pack()
 
@@ -30,7 +30,7 @@ def PHI(event):
            detection_time = str(datetime.now())
            print("suspicious string found has been found ! <-> SMB version 1 attempt. At time: ", detection_time)
            
-           # IPv4 fields in the packer
+           # modify flow table entries to add the following matching entries
            ip_packet = event.parsed.find('ipv4')
            ipaddr = ip_packet.srcip
            msg = of.ofp_flow_mod()
