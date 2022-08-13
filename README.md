@@ -9,9 +9,11 @@ Detects malicious strings in packet headers to block the host.
 
 ### 1.2. packet_size_inspect.py
 Detects malicious tcp packets based on their size to block the host.
+<br/><br/>
 
 ## 2. Deep Packet Inspection (DPI)
 Analyses tcp packet for unique malicious strings to block the host.
+<br/><br/>
 
 ## 3. Network Scan Based
 Analyses network traffic scans to block the host.
