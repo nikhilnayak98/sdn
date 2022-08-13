@@ -6,15 +6,10 @@ import pox.lib.packet as pkt
 from pox.lib.addresses import IPAddr
 from datetime import datetime
 
-def HTTP_handler():
-    print("A HTTP request to the HoneyPot")
-
-def SMB_handler():
-    print("A SMB request to the HoneyPot")
-
 def HPM(event):
     # define ports
-    listening_ports = [80, 443, 139, 445]
+    listening_ports = [80, 443, 139, 445, 3389, 135, 5985, 5986, 20, 21, 3306, 25, 587, 993, 22, 23, 389, 636, 9389]
+   
     # define honeypot address in the network
     honeypot_address = "192.168.1.7"
 
@@ -22,7 +17,7 @@ def HPM(event):
     Received_packet = event.parsed.find('tcp')
     if Received_packet is None:
         return
-    # check if destination port is 445, 80, 443
+    # check if destination port is in the listenting ports list
     elif Received_packet.dstport in listening_ports:
         IP = event.parsed.find('ipv4')
         ipaddr = IP.dstip
@@ -47,18 +42,47 @@ def HPM(event):
             for connection in core.openflow.connections:
                 connection.send(msg)
                 core.getLogger("blocker").debug("installing flow for %s with destination port %i", ip_packet.srcip, Received_packet.dstport)
-                core.getLogger("blocker").debug("blocked suspicious HTTP or SMB traffic %s <-> %s : wannacry self-propogation attempt", Received_packet.srcport, Received_packet.dstport)
+                core.getLogger("blocker").debug("blocked suspicious traffic %s <-> %s : wannacry self-propogation attempt", Received_packet.srcport, Received_packet.dstport)
             event.halt = True
 
             # handle HTTP requests
             if Received_packet.dstport == 80 or Received_packet.dstport == 443:
-                HTTP_handler()
-            
+                print("A HTTP request to the Honeypot")
             # handle SMB requests
-            if Received_packet.dstport == 445 or Received_packet.dstport == 139:
-                SMB_handler()
+            elif Received_packet.dstport == 445 or Received_packet.dstport == 139:
+                print("A SMB request to Honeypot")
+            # handle Remote desktop protocol requests
+            elif Received_packet.dstport == 3389:
+                print("A RDP request to Honeypot")
+            # handle Remote procedure call requests
+            elif Received_packet.dstport == 135:
+                rint("A RPC request to Honeypot")
+            # handle Windows remote management requests
+            elif Received_packet.dstport == 5985 or Received_packet.dstport == 5986:
+                print("A Windows remote management request to Honeypot")
+            # handle FTP requests
+            elif Received_packet.dstport == 20 or Received_packet.dstport == 21:
+                print("A FTP request to Honeypot")
+            # handle SQL requests
+            elif Received_packet.dstport == 3306:
+                print("A SQL request to the Honeypot")
+            # handle Mail server requests
+            elif Received_packet.dstport == 25 or Received_packet.dstport == 587 or Received_packet.dstport == 993:
+                print("A mail server related request to the Honeypot")
+            # handle SSH requests
+            elif Received_packet.dstport == 22:
+                print("A SSH request to the Honeypot")
+            # handle Telnet requests
+            elif Received_packet.dstport == 23:
+                print("A Telnet request to the Honeypot")
+            # handle LDAP requests
+            elif Received_packet.dstport == 389 or Received_packet.dstport == 636:
+                print("A LDAP request to the Honeypot")
+            # handle AD service requests
+            elif Received_packet.dstport == 9389:
+                print("Active directory service requests to the Honeypot")
     else:
         return
 
 def launch():
-    core.openflow.addListenerByName("PacketIn", HPM, priority=10000)
+    core.openflow.addListenerByName("PacketIn", HPM, priority = 10000)
