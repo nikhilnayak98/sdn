@@ -23,3 +23,5 @@ Detects arp scan with a threshold by keeping a log of number of arp request pack
 
 ### 3.2. honeypot_monitor.py
 Detects connections over specific ports to a honeypot in the network and blocks the host.
+
+### TODO: HTTP IOC based detection 
