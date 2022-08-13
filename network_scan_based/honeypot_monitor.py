@@ -42,7 +42,7 @@ def HPM(event):
             for connection in core.openflow.connections:
                 connection.send(msg)
                 core.getLogger("blocker").debug("installing flow for %s with destination port %i", ip_packet.srcip, Received_packet.dstport)
-                core.getLogger("blocker").debug("blocked suspicious traffic %s <-> %s : wannacry self-propogation attempt", Received_packet.srcport, Received_packet.dstport)
+                core.getLogger("blocker").debug("blocked suspicious traffic %s <-> %s : connection to honeypot", Received_packet.srcport, Received_packet.dstport)
             event.halt = True
 
             # handle HTTP requests
