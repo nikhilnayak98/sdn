@@ -82,6 +82,8 @@ def HPM(event):
             # handle AD service requests
             elif tcp_packet.dstport == 9389:
                 print("Active directory service requests to the Honeypot")
+            else:
+                pass
     else:
         return
 

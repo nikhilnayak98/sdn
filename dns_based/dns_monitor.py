@@ -1,4 +1,4 @@
-# ./pox.py misc.full_payload forwarding.l2_learning arp_scan_monitor samples.pretty_log log.level --DEBUG info.packet_dump
+# ./pox.py misc.full_payload forwarding.l2_learning dns_monitor samples.pretty_log log.level --DEBUG info.packet_dump
 
 from pox.core import core
 import pox.openflow.libopenflow_01 as of
@@ -7,15 +7,15 @@ from pox.lib.addresses import IPAddr
 from pox.lib.packet.arp import arp
 from datetime import datetime
 
-# create a dictionary to put suspicious MAC addresses and threshold
-mydict = dict()
-
-def ASM(event):
-    # define threshold
-    threshold_value = 5
+def DNSMON(event):
 
     # parse the packet
-    packet = event.parsed
+    packet = event.parsed.find('dns')
+
+    if packet is None:
+        return
+    elif packet.dstport == 53:
+        
 
     # check if packet is ARP
     if packet.type == packet.ARP_TYPE:
@@ -57,4 +57,4 @@ def ASM(event):
 
 def launch():
     mydict.clear()
-    core.openflow.addListenerByName("PacketIn", ASM, priority = 20000)
+    core.openflow.addListenerByName("PacketIn", DNSMON, priority = 10000)
