@@ -16,6 +16,7 @@ def HPM(event):
     # TODO: some of the ports communicate over UDP so write some code for UDP
     # search for TCP packets
     tcp_packet = event.parsed.find('tcp')
+    
     if tcp_packet is None:
         return
     # check if destination port is in the listenting ports list
