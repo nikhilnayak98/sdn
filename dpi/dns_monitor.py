@@ -16,14 +16,14 @@ def DNSMON(event):
 
     if udp_packet is None:
         return
-    # inspect destination port for ports 139 or 445
+    # inspect destination port 53
     elif udp_packet.dstport == 53:
         packet = event.parsed.find('dns')
         
         ip_request = event.parsed.find('ipv4')
    
         if packet is not None and packet.parsed:
-            # check query name in 
+            # check query name in dns packet questions
             for query in packet.questions:
                 if query.name in suspicious_urls:
                     detection_time = str(datetime.now())
