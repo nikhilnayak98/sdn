@@ -30,7 +30,7 @@ def HPM(event):
             ipaddr = IP.srcip
             
             detection_time = str(datetime.now())
-            print("suspicious connection found ! <-> connection to honeypot from %s to %i. At time: %s", tcp_packet.srcport, tcp_packet.dstport, detection_time)
+            print("suspicious connection found ! <-> connection to honeypot from " + str(ipaddr) + " to port " + str(tcp_packet.dstport) + ". At time: " + str(detection_time))
             
             msg = of.ofp_flow_mod()
             msg.match.dl_type = 0x800
