@@ -24,7 +24,7 @@ def ASM(event):
             return
         # if packet is packet type request
         if packet.payload.opcode == arp.REQUEST: 
-            # add MAC address to dictonary and increment threshold
+            # add MAC address to dictonary and increment the number of request
             arp_requests[packet.src] = arp_requests.get(packet.src, 0) + 1
             print(packet.payload.protosrc, "has performed", arp_requests[packet.src], "unanswered ARP reuqests.")
             
@@ -50,7 +50,7 @@ def ASM(event):
                 pass
         # check if packet type is reply
         elif packet.payload.opcode == arp.REPLY:
-            # decrease one to MAC source address in the dictionary
+            # decrease the number of request by one of the MAC source address in the dictionary
             arp_requests[packet.dst] = arp_requests.get(packet.dst, 0) - 1
             print(packet.payload.protodst, "has performed", arp_requests[packet.dst], "unanswered ARP requests.")
         else:
