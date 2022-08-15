@@ -8,7 +8,7 @@ from pox.lib.packet.arp import arp
 from datetime import datetime
 
 # create a dictionary to put suspicious MAC addresses and threshold
-mydict = dict()
+arp_requests = dict()
 
 def ASM(event):
     # define threshold
@@ -25,11 +25,11 @@ def ASM(event):
         # if packet is packet type request
         if packet.payload.opcode == arp.REQUEST: 
             # add MAC address to dictonary and increment threshold
-            mydict[packet.src] = mydict.get(packet.src, 0) + 1
-            print(packet.payload.protosrc, "has performed", mydict[packet.src], "unanswered ARP reuqests.")
+            arp_requests[packet.src] = arp_requests.get(packet.src, 0) + 1
+            print(packet.payload.protosrc, "has performed", arp_requests[packet.src], "unanswered ARP reuqests.")
             
-            # if threshold is more than provided, install a rule to block the packet source MAC address from communicating within the network
-            if mydict[packet.src] > threshold_value:
+            # check for threshold
+            if arp_requests[packet.src] > threshold_value:
                 detection_time = str(datetime.now())
                 print("suspicious arp packets found ! <-> sending three or more suspicious arp packets. At time:", detection_time)
 
@@ -39,6 +39,7 @@ def ASM(event):
                 msg.idle_timeout = 1800
                 msg.hard_timeout = 1800
                 
+                # install a rule to block the packet source MAC address from communicating within the network
                 for connection in core.openflow.connections:
                     connection.send(msg)
                     core.getLogger("ARP Requests Monitor").debug("blocked host with IP %s on port %i for 30 minutes", packet.payload.protosrc, event.port)
@@ -48,13 +49,13 @@ def ASM(event):
         # check if packet type is reply
         elif packet.payload.opcode == arp.REPLY:
             # decrease one to MAC source address in the dictionary
-            mydict[packet.dst] = mydict.get(packet.dst, 0) - 1
-            print(packet.payload.protodst, "has performed", mydict[packet.dst], "unanswered ARP requests.")
+            arp_requests[packet.dst] = arp_requests.get(packet.dst, 0) - 1
+            print(packet.payload.protodst, "has performed", arp_requests[packet.dst], "unanswered ARP requests.")
         else:
             return
     else:
         return
 
 def launch():
-    mydict.clear()
+    arp_requests.clear()
     core.openflow.addListenerByName("PacketIn", ASM, priority = 20000)
