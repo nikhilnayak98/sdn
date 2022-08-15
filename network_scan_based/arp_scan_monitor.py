@@ -34,6 +34,8 @@ def ASM(event):
                 print("suspicious arp packets found ! <-> sending three or more suspicious arp packets. At time:", detection_time)
 
                 ip_src = packet.src
+                
+                # modify flow table entries to add the following matching entries
                 msg = of.ofp_flow_mod()
                 msg.match.dl_src = packet.src
                 msg.idle_timeout = 1800
