@@ -20,8 +20,8 @@ def DPI(event):
     # if packet is not TCP return it to forwarding.l2_learning component
     if tcp_packet is None:
         return
-    # inspect destination port for ports 80, 445 or 139
-    elif tcp_packet.dstport == 80 or tcp_packet.dstport == 445 or tcp_packet.dstport == 139:
+    # inspect destination port 445 or 139
+    elif tcp_packet.dstport == 445 or tcp_packet.dstport == 139:
         # parse the packet
         packet = event.parsed
         tcpbytes = tcp_packet.pack()
