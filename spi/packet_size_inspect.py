@@ -12,13 +12,11 @@ packets = dict()
 
 def PSI(event):
 
-    # actual suspicious sizes on WireShark 93, 114, 136, 146, 150, 187, 193, 194, 1287
-    # suspicious packet sizes 78, 84, 1532, 1305, 112, 1224
-    # pattern 80, 78, 204
-    sus_packet_sizes = [78, 84, 80, 204]
+    # suspicious sizes
+    sus_packet_sizes = [191, 194, 150, 136]
 
     # define threshold
-    threshold_value = 5
+    threshold_value = 2
 
     # search for TCP packets
     SMB_packet = event.parsed.find('tcp')
@@ -32,7 +30,7 @@ def PSI(event):
         packet = event.parsed
         
         # get the size of the packet
-        packet_size = len(SMB_packet)
+        packet_size = len(packet)
     
         # if the packet size is suspicious, add MAC address to dictionary and increment threshold
         # then forward the packet to the forwarding.l2_learning component
@@ -52,7 +50,7 @@ def PSI(event):
             # if threshold is more than provided, install a rule to block the packet source MAC address from communicating within the network
             if packets[packet.src] >= threshold_value:
                 detection_time = str(datetime.now())
-                print("suspicious smb packets found ! <-> sending three or more suspicious SMB packets. At time:", detection_time)
+                print("suspicious smb packets found ! <-> sending two or more suspicious SMB packets. At time:", detection_time)
 
                 msg = of.ofp_flow_mod()
                 msg.match.dl_src = packet.src
