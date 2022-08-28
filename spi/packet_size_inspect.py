@@ -11,7 +11,6 @@ from datetime import datetime
 packets = dict()
 
 def PSI(event):
-
     # suspicious sizes
     sus_packet_sizes = [191, 194, 150, 136]
 
