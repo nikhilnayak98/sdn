@@ -31,7 +31,7 @@ def ASM(event):
             # check for threshold
             if arp_requests[packet.src] > threshold_value:
                 detection_time = str(datetime.now())
-                print("suspicious arp packets found ! <-> sending three or more suspicious arp packets. At time:", detection_time)
+                print("suspicious arp packets found ! <-> sending three or more suspicious arp packets. At time: ", detection_time)
 
                 ip_src = packet.src
                 

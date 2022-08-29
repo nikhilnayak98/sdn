@@ -15,7 +15,7 @@ with open('malicious_strings.csv', newline='') as f:
 
 def DPI(event):
     # ports to listen
-    listening_ports = [80, 139, 445]
+    listening_ports = [139, 445]
     # search for TCP packets
     tcp_packet = event.parsed.find('tcp') 
 

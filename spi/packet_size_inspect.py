@@ -49,7 +49,7 @@ def PSI(event):
             # if threshold is more than provided, install a rule to block the packet source MAC address from communicating within the network
             if packets[packet.src] >= threshold_value:
                 detection_time = str(datetime.now())
-                print("suspicious smb packets found ! <-> sending two or more suspicious SMB packets. At time:", detection_time)
+                print("suspicious smb packets found ! <-> sending two or more suspicious SMB packets. At time: ", detection_time)
 
                 msg = of.ofp_flow_mod()
                 msg.match.dl_src = packet.src

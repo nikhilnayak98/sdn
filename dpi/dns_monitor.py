@@ -33,7 +33,7 @@ def DNSMON(event):
             for query in packet.questions:
                 if query.name in suspicious_urls:
                     detection_time = str(datetime.now())
-                    print("suspicious url found ! <-> wannacry url accessed. At time:", detection_time)
+                    print("suspicious url found ! <-> wannacry url accessed. At time: ", detection_time)
                     
                     # modify flow table entries to add the following matching entries
                     msg = of.ofp_flow_mod()
