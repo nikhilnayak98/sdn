@@ -48,7 +48,8 @@ def DPI(event):
                 # install a rule to block IP address of the sender
                 for connection in core.openflow.connections:
                     connection.send(msg)
-                    core.getLogger("blocker").debug("flow has been installed for %s with destination port %i", IP.srcip, tcp_packet.dstport)core.getLogger("blocker").debug("blocked suspicious packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport) 
+                    core.getLogger("blocker").debug("flow has been installed for %s with destination port %i", IP.srcip, tcp_packet.dstport)
+                    core.getLogger("blocker").debug("blocked suspicious packet from port %s to port %s", tcp_packet.srcport, tcp_packet.dstport) 
                 break
             else:
                 msg = of.ofp_packet_out()
