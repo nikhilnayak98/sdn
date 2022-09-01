@@ -20,8 +20,10 @@ def dns_monitor(pkts):
             else:
                 continue
 
+            # extract URL
             url = name.decode()[:-1]
             print(url)
+            # check if URL is in suspicious list
             if url in suspicious_urls:
                 os.system("wmic path win32_networkadapter where PhysicalAdapter=True call disable")
                 os.system("netsh interface set interface Wi-Fi disable")
