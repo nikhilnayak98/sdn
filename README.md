@@ -1,5 +1,5 @@
 # Ransomware Detection and Mitigation in SDN
-Pox Controller modules to detect ransomwares using Software Defined Networking (SDN) techniques and set OpenFlow rules to stop them from spreading in a network.
+Pox Controller modules to detect ransomware using Software Defined Networking (SDN) techniques and set flow rules to stop them from spreading in a network.
 
 ## 1. Shallow Packet Inspection (SPI)
 Analyses the tcp packet headers to block the host.
