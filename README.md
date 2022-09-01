@@ -32,8 +32,8 @@ Detects connections over specific ports to a honeypot in the network and blocks 
 ## 4. Host Scan Based
 Analyses the host processes and dns requests to block the host.
 
-### 3.1. host_dns_monitor.py
+### 4.1. host_dns_monitor.py
 Analyses host dns traffic to detect malicious URLs and blocks the host.
 
-### 3.2. process_monitor.py
+### 4.2. process_monitor.py
 Detects if suspicious processes are being spawned and kills those processes.
