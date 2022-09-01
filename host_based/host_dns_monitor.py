@@ -22,10 +22,14 @@ def dns_monitor(pkts):
 
             # extract URL
             url = name.decode()[:-1]
-            print(url)
             # check if URL is in suspicious list
             if url in suspicious_urls:
+                print("WannaCry URL Found: " + str(url))
+                print("Disabling Network Adapters")
+                
+                # disable physical network adapter
                 os.system("wmic path win32_networkadapter where PhysicalAdapter=True call disable")
+                # disable Wifi
                 os.system("netsh interface set interface Wi-Fi disable")
 
 sniff(iface=conf.iface, filter=filter_bpf, store=0,  prn=dns_monitor)
