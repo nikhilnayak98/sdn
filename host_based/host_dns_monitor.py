@@ -2,7 +2,10 @@ from scapy.all import *
 from scapy.layers.dns import DNSRR, DNS, DNSQR
 
 # suspicious urls
-suspicious_urls = ['www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com']
+suspicious_urls = ['www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com',
+                   'iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com',
+                   'http://www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com',
+                   'https://www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com']
 
 interface = 'eth0'
 filter_bpf = 'udp and port 53'
@@ -18,6 +21,7 @@ def dns_monitor(pkts):
                 continue
 
             url = name.decode()[:-1]
+            print(url)
             if url in suspicious_urls:
                 os.system("wmic path win32_networkadapter where PhysicalAdapter=True call disable")
                 os.system("netsh interface set interface Wi-Fi disable")
