@@ -17,7 +17,7 @@ Detects malicious tcp packets based on their size to block the host.
 Analyses tcp packet for unique malicious strings to block the host.
 
 ### 2.2. dns_monitor.py
-Analyses dns requests to malicious urls and blocks the host.
+Analyses dns requests to detect malicious urls and blocks the host.
 <br/><br/>
 
 ## 3. Network Scan Based
@@ -29,4 +29,11 @@ Detects arp scan with a threshold by keeping a log of number of arp request pack
 ### 3.2. honeypot_monitor.py
 Detects connections over specific ports to a honeypot in the network and blocks the host.
 
-### TODO: HTTP IOC based detection 
+## 4. Host Scan Based
+Analyses the host processes and dns requests to block the host.
+
+### 3.1. host_dns_monitor.py
+Analyses host dns traffic to detect malicious URLs and blocks the host.
+
+### 3.2. process_monitor.py
+Detects if suspicious processes are being spawned and kills those processes.
