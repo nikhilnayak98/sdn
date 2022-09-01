@@ -30,7 +30,7 @@ Detects arp scan with a threshold by keeping a log of number of arp request pack
 Detects connections over specific ports to a honeypot in the network and blocks the host.
 <br/><br/>
 
-## 4. Host Scan Based
+## 4. Host Based
 Analyses the host processes and dns requests to block the host.
 
 ### 4.1. host_dns_monitor.py
