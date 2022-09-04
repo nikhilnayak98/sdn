@@ -6,9 +6,15 @@ import pox.lib.packet as pkt
 from pox.lib.addresses import IPAddr
 from pox.lib.packet.arp import arp
 from datetime import datetime
+import csv
 
-# suspicious urls
-suspicious_urls = ['www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com']
+# read suspicious urls from a csv file
+suspicious_urls = []
+with open('malicious_urls.csv', 'r') as read_obj:
+    csv_reader = csv.reader(read_obj)
+    list_of_rows = list(csv_reader)
+    for rows in list_of_rows:
+        suspicious_urls.append(rows[0])
 
 def DNSMON(event):
     # search for UDP packets

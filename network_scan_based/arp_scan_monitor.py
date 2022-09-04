@@ -1,4 +1,4 @@
-# ./pox.py misc.full_payload forwarding.l2_learning arp_scan_monitor samples.pretty_log log.level --DEBUG info.packet_dump
+# ./pox.py forwarding.l2_learning arp_scan_monitor samples.pretty_log log.level --DEBUG info.packet_dump
 
 from pox.core import core
 import pox.openflow.libopenflow_01 as of

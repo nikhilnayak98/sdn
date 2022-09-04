@@ -9,9 +9,11 @@ import csv
 
 # read suspicious strings from a csv file
 suspicious_strings = []
-with open('malicious_strings.csv', newline='') as f:
-    reader = csv.reader(f)
-    suspicious_strings = list(reader)
+with open('malicious_strings.csv', 'r') as read_obj:
+    csv_reader = csv.reader(read_obj)
+    list_of_rows = list(csv_reader)
+    for rows in list_of_rows:
+        suspicious_strings.append(rows[0])
 
 def DPI(event):
     # ports to listen

@@ -1,11 +1,16 @@
+# pyinstaller --onefile host_dns_monitor.py
+
 from scapy.all import *
 from scapy.layers.dns import DNSRR, DNS, DNSQR
+import csv
 
-# suspicious urls
-suspicious_urls = ['www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com',
-                   'iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com',
-                   'http://www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com',
-                   'https://www.iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com']
+# read suspicious DNS requests from a csv
+suspicious_urls = []
+with open('suspicious_dns_requests.csv', 'r') as read_obj:
+    csv_reader = csv.reader(read_obj)
+    list_of_rows = list(csv_reader)
+    for rows in list_of_rows:
+        suspicious_urls.append(rows[0])
 
 interface = 'eth0'
 filter_bpf = 'udp and port 53'
