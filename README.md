@@ -1,4 +1,4 @@
-# Ransomware Detection and Mitigation in SDN
+# Ransomware Detection and Mitigation using Software-Defined Networking: WannaCry
 Pox Controller modules to detect ransomware using Software Defined Networking (SDN) techniques and set flow rules to stop them from spreading in a network.
 
 ## 1. Shallow Packet Inspection (SPI)
